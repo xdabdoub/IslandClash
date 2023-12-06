@@ -38,7 +38,7 @@ public class HPlayer {
         this.rank = Rank.UNRANKED;
 
         this.sql = plugin.getSQLDatabase();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::create);
+        create(); // No need to call Async, since this constructor is used in an Async Event. (AsyncPlayerPreLoginEvent)
     }
 
     /*
