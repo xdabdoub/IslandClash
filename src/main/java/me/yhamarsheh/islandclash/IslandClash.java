@@ -1,5 +1,6 @@
 package me.yhamarsheh.islandclash;
 
+import me.yhamarsheh.islandclash.managers.GameManager;
 import me.yhamarsheh.islandclash.managers.PlayersManager;
 import me.yhamarsheh.islandclash.managers.ScoreboardManager;
 import me.yhamarsheh.islandclash.storage.SQLDatabase;
@@ -10,6 +11,7 @@ public class IslandClash extends JavaPlugin {
     private SQLDatabase sqlDatabase;
     private PlayersManager playersManager;
     private ScoreboardManager scoreboardManager;
+    private GameManager gameManager;
 
     @Override
     public void onEnable() {
@@ -25,6 +27,7 @@ public class IslandClash extends JavaPlugin {
         sqlDatabase = new SQLDatabase(this);
         playersManager = new PlayersManager(this);
         scoreboardManager = new ScoreboardManager(this);
+        gameManager = new GameManager(this);
     }
 
     public SQLDatabase getSQLDatabase() {
@@ -37,5 +40,9 @@ public class IslandClash extends JavaPlugin {
 
     public ScoreboardManager getScoreboardManager() {
         return scoreboardManager;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }

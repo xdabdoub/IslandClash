@@ -92,6 +92,10 @@
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -121,6 +125,12 @@
             <groupId>fr.mrmicky</groupId>
             <artifactId>fastboard</artifactId>
             <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.5</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
