@@ -40,6 +40,7 @@ public class DataHandlingListener implements Listener {
 
         hPlayer.setPlayer(player);
         plugin.getScoreboardManager().createBoard(hPlayer);
+        plugin.getGameManager().getGame().addPlayer(hPlayer);
     }
 
     @EventHandler
@@ -48,6 +49,7 @@ public class DataHandlingListener implements Listener {
         HPlayer hPlayer = plugin.getPlayersManager().getPlayerMap().get(player.getUniqueId()); // Could never be null, since we're kicking the player if its null when they join.
 
         plugin.getScoreboardManager().removeBoard(hPlayer);
+        plugin.getGameManager().getGame().removePlayer(hPlayer);
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, hPlayer::saveData);
         plugin.getPlayersManager().removePlayer(player.getUniqueId());
