@@ -20,6 +20,15 @@ public class PlayersManager {
         this.damageManager = new DamageManager();
     }
 
+    public void disable() {
+        for (HPlayer hPlayer : playerMap.values()) {
+            hPlayer.saveData();
+        }
+
+        playerMap.clear();
+        damageManager.disable();
+    }
+
     public void addPlayer(UUID uuid, HPlayer hPlayer) {
         playerMap.put(uuid, hPlayer);
     }
@@ -40,6 +49,10 @@ public class PlayersManager {
 
         public DamageManager() {
             this.damageMap = new HashMap<>();
+        }
+
+        public void disable() {
+            damageMap.clear();
         }
 
         public void handle(HPlayer damager, HPlayer damaged) {

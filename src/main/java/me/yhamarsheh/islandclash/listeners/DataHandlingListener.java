@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class DataHandlingListener implements Listener {
 
@@ -41,6 +42,8 @@ public class DataHandlingListener implements Listener {
         hPlayer.setPlayer(player);
         plugin.getScoreboardManager().createBoard(hPlayer);
         plugin.getGameManager().getGame().addPlayer(hPlayer);
+
+        hPlayer.teleport(plugin.getActiveGame().getSpawnLocation());
     }
 
     @EventHandler

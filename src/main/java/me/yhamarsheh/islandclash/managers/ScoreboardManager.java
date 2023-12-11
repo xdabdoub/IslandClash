@@ -17,15 +17,15 @@ import java.util.UUID;
 public class ScoreboardManager {
 
     private final IslandClash plugin;
-    private Map<UUID, FastBoard> scoreboards;
+    private final Map<UUID, FastBoard> scoreboards;
 
-    private String todayDateFormatted;
+    private final String todayDateFormatted;
     public ScoreboardManager(IslandClash plugin) {
         this.plugin = plugin;
         this.scoreboards = new HashMap<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        this.todayDateFormatted = sdf.format(new Date().toInstant());
+        this.todayDateFormatted = sdf.format(new Date());
 
         startUpdating();
     }
@@ -40,13 +40,12 @@ public class ScoreboardManager {
                     if (hPlayer == null) continue;
                     FastBoard board = scoreboards.get(uuid);
                     board.updateLines(
-                            ChatUtils.color("&7"),
-                            ChatUtils.color("&7" + todayDateFormatted + " Season 1"),
+                            ChatUtils.color("&7" + todayDateFormatted + " &8S1"),
                             ChatUtils.color("&7"),
                             ChatUtils.color("Rank: " + hPlayer.getRank().toString()),
                             ChatUtils.color("&7"),
                             ChatUtils.color("Level: &b" + hPlayer.getLevel()),
-                            ChatUtils.color("XP: &b" + hPlayer.getXP() + " &8(" + hPlayer.getXP()/5000 + "%)"),
+                            ChatUtils.color("XP: &b" + hPlayer.getXP() + " &8(" + ((hPlayer.getXP()/5000)*100) + "%)"),
                             ChatUtils.color("&7"),
                             ChatUtils.color("Hyions: &b$" + hPlayer.getHyions()),
                             ChatUtils.color("&7"),
@@ -62,16 +61,15 @@ public class ScoreboardManager {
 
     public void createBoard(HPlayer hPlayer) {
         FastBoard board = new FastBoard(hPlayer.getPlayer());
-        board.updateTitle(ChatUtils.color("&b&lIsland &3Clash"));
+        board.updateTitle(ChatUtils.color("&b&lIsland &3&lClash"));
 
         board.updateLines(
-                ChatUtils.color("&7"),
-                ChatUtils.color("&7" + todayDateFormatted + " Season 1"),
+                ChatUtils.color("&7" + todayDateFormatted + " &8S1"),
                 ChatUtils.color("&7"),
                 ChatUtils.color("Rank: " + hPlayer.getRank().toString()),
                 ChatUtils.color("&7"),
                 ChatUtils.color("Level: &b" + hPlayer.getLevel()),
-                ChatUtils.color("XP: &b" + hPlayer.getXP() + " &8(" + hPlayer.getXP()/5000 + "%)"),
+                ChatUtils.color("XP: &b" + hPlayer.getXP() + " &8(" + ((hPlayer.getXP()/5000)*100) + "%)"),
                 ChatUtils.color("&7"),
                 ChatUtils.color("Hyions: &b$" + hPlayer.getHyions()),
                 ChatUtils.color("&7"),
@@ -80,6 +78,8 @@ public class ScoreboardManager {
                 ChatUtils.color("&7"),
                 ChatUtils.color("&bplay.hybridmc.xyz")
         );
+
+        scoreboards.put(hPlayer.getUniqueId(), board);
     }
 
     public void removeBoard(HPlayer hPlayer) {

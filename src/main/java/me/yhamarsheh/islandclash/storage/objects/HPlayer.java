@@ -35,6 +35,7 @@ public class HPlayer {
 
     public HPlayer(IslandClash plugin, UUID uuid) {
         this.plugin = plugin;
+        this.uuid = uuid;
         this.rank = Rank.UNRANKED;
 
         this.sql = plugin.getSQLDatabase();
@@ -45,6 +46,7 @@ public class HPlayer {
      * Class Functions
      */
     public void addKill() {
+        player.setHealth(player.getHealth() + 4);
         setKills(kills + 1);
         addStreak();
     }
@@ -58,6 +60,7 @@ public class HPlayer {
     }
 
     public void addDeath() {
+        player.setHealth(20);
         setDeaths(deaths + 1);
         setStreak(0);
     }
@@ -173,6 +176,10 @@ public class HPlayer {
         return uuid;
     }
 
+    public Location getLocation() {
+        return player.getLocation();
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
     }
@@ -240,10 +247,11 @@ public class HPlayer {
         try {
             connection = sql.getConnection();
             statement = connection.prepareStatement(
-                    "REPLACE INTO quests_data (UUID, KILLS, DEATHS, STREAK, COLLECTED_BOXES, RANK, LEVEL, XP, HYIONS) VALUES " +
+                    "REPLACE INTO player_data (UUID, KILLS, DEATHS, STREAK, COLLECTED_BOXES, RANK, LEVEL, XP, HYIONS) VALUES " +
                             "('" + uuid + "',"
                             + kills + ","
                             + deaths + ","
+                            + streak + ","
                             + collectedBoxes + ",'"
                             + rank.name() + "',"
                             + level + ","
