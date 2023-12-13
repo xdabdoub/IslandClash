@@ -1,0 +1,102 @@
+package me.yhamarsheh.islandclash;
+
+import me.yhamarsheh.islandclash.api.IslandClashAPI;
+import me.yhamarsheh.islandclash.commands.IClashCMD;
+import me.yhamarsheh.islandclash.game.Game;
+import me.yhamarsheh.islandclash.listeners.DataHandlingListener;
+import me.yhamarsheh.islandclash.listeners.GameListener;
+import me.yhamarsheh.islandclash.managers.GameManager;
+import me.yhamarsheh.islandclash.managers.PlayersManager;
+import me.yhamarsheh.islandclash.managers.ScoreboardManager;
+import me.yhamarsheh.islandclash.storage.SQLDatabase;
+import me.yhamarsheh.islandclash.storage.objects.HPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.UUID;
+
+public class IslandClash extends JavaPlugin implements IslandClashAPI {
+
+    private SQLDatabase sqlDatabase;
+    private PlayersManager playersManager;
+    private ScoreboardManager scoreboardManager;
+    private GameManager gameManager;
+
+    @Override
+    public void onEnable() {
+        init();
+    }
+
+    @Override
+    public void onDisable() {
+        disableLogic();
+    }
+
+    private void init() {
+        saveDefaultConfig();
+        sqlDatabase = new SQLDatabase(this);
+        playersManager = new PlayersManager(this);
+        scoreboardManager = new ScoreboardManager(this);
+        gameManager = new GameManager(this);
+
+        registerListeners();
+        registerCommands();
+        setupGame();
+    }
+
+    private void registerListeners() {
+        new DataHandlingListener(this);
+        new GameListener(this);
+    }
+
+    private void registerCommands() {
+        new IClashCMD(this);
+    }
+
+    private void setupGame() {
+        FileConfiguration configuration = getConfig();
+        if (configuration.getString("spawn.world") == null) return;
+
+        World world = Bukkit.getWorld(configuration.getString("spawn.world"));
+        double x = configuration.getDouble("spawn.x");
+        double y = configuration.getDouble("spawn.y");
+        double z = configuration.getDouble("spawn.z");
+        double yaw = configuration.getDouble("spawn.yaw");
+        double pitch = configuration.getDouble("spawn.pitch");
+
+        getActiveGame().setSpawnLocation(new Location(world, x, y, z, (float) yaw, (float) pitch));
+    }
+
+    private void disableLogic() {
+        playersManager.disable(); // SEVERE - Contains Players Data
+    }
+
+    public SQLDatabase getSQLDatabase() {
+        return sqlDatabase;
+    }
+
+    public PlayersManager getPlayersManager() {
+        return playersManager;
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+    @Override
+    public HPlayer getPlayer(UUID uuid) {
+        return getPlayersManager().getPlayerMap().get(uuid);
+    }
+
+    @Override
+    public Game getActiveGame() {
+        return getGameManager().getGame();
+    }
+}
