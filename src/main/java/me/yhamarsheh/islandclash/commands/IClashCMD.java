@@ -1,6 +1,7 @@
 package me.yhamarsheh.islandclash.commands;
 
 import me.yhamarsheh.islandclash.IslandClash;
+import me.yhamarsheh.islandclash.lootboxes.LootBoxType;
 import me.yhamarsheh.islandclash.storage.objects.HPlayer;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -43,6 +44,17 @@ public class IClashCMD implements CommandExecutor {
             plugin.saveConfig();
 
             hPlayer.sendMessage("&b&lIsland Clash &7- Spawn location set successfully.");
+        } else if (args[0].equalsIgnoreCase("spawnlootbox")) {
+            if (args.length < 2) {
+                hPlayer.sendMessage("&b&lIsland Clash &7- &cYou must specify the type of the loot box you want to spawn." +
+                        "\nChoose one of the following:\n1. COMMON\n2. RARE\n3. EPIC\n4. LEGENDARY");
+                return true;
+            }
+
+            Location location = hPlayer.getLocation();
+            LootBoxType lootBoxType = LootBoxType.valueOf(args[1].toUpperCase());
+            plugin.getLootBoxesManager().createByType(lootBoxType).spawn(location);
+            hPlayer.sendMessage("&b&lIsland Clash &7- &7Spawned a " + lootBoxType.name() + " loot box!");
         }
         return false;
     }

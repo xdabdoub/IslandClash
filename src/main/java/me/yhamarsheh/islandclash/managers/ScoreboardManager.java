@@ -45,7 +45,7 @@ public class ScoreboardManager {
                             ChatUtils.color("Rank: " + hPlayer.getRank().toString()),
                             ChatUtils.color("&7"),
                             ChatUtils.color("Level: &b" + hPlayer.getLevel()),
-                            ChatUtils.color("XP: &b" + hPlayer.getXP() + " &8(" + ((hPlayer.getXP()/5000)*100) + "%)"),
+                            ChatUtils.color("XP: &b" + hPlayer.getXP() + " &8(" + (int) ((hPlayer.getXP()/5000.0)*100) + "%)"),
                             ChatUtils.color("&7"),
                             ChatUtils.color("Hyions: &b$" + hPlayer.getHyions()),
                             ChatUtils.color("&7"),

@@ -1,6 +1,7 @@
 package me.yhamarsheh.islandclash.storage.objects;
 
 import me.yhamarsheh.islandclash.IslandClash;
+import me.yhamarsheh.islandclash.game.upgrades.PlayerUpgrades;
 import me.yhamarsheh.islandclash.leveling.Rank;
 import me.yhamarsheh.islandclash.storage.SQLDatabase;
 import me.yhamarsheh.islandclash.utilities.ChatUtils;
@@ -33,10 +34,14 @@ public class HPlayer {
     private int xp;
     private int hyions;
 
+    // s
+    private PlayerUpgrades playerUpgrades;
+
     public HPlayer(IslandClash plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;
         this.rank = Rank.UNRANKED;
+        this.playerUpgrades = new PlayerUpgrades(this);
 
         this.sql = plugin.getSQLDatabase();
         create(); // No need to call Async, since this constructor is used in an Async Event. (AsyncPlayerPreLoginEvent)
@@ -186,6 +191,25 @@ public class HPlayer {
 
     public Player getPlayer() {
         return player;
+    }
+
+    /*
+     * S
+     */
+
+    public boolean hasSharpnessUpgrade() {
+        if (playerUpgrades.getSharpnessUpgrade() == null) return false;
+        return playerUpgrades.getSharpnessUpgrade().getLevel() > 0;
+    }
+
+    public boolean hasProtectionUpgrade() {
+        if (playerUpgrades.getProtectionUpgrade() == null) return false;
+        return playerUpgrades.getProtectionUpgrade().getLevel() > 0;
+    }
+
+
+    public PlayerUpgrades getPlayerUpgrades() {
+        return playerUpgrades;
     }
 
     /*

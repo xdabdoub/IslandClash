@@ -5,9 +5,7 @@ import me.yhamarsheh.islandclash.commands.IClashCMD;
 import me.yhamarsheh.islandclash.game.Game;
 import me.yhamarsheh.islandclash.listeners.DataHandlingListener;
 import me.yhamarsheh.islandclash.listeners.GameListener;
-import me.yhamarsheh.islandclash.managers.GameManager;
-import me.yhamarsheh.islandclash.managers.PlayersManager;
-import me.yhamarsheh.islandclash.managers.ScoreboardManager;
+import me.yhamarsheh.islandclash.managers.*;
 import me.yhamarsheh.islandclash.storage.SQLDatabase;
 import me.yhamarsheh.islandclash.storage.objects.HPlayer;
 import org.bukkit.Bukkit;
@@ -24,6 +22,8 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
     private PlayersManager playersManager;
     private ScoreboardManager scoreboardManager;
     private GameManager gameManager;
+    private LootBoxesManager lootBoxesManager;
+    private KitManager kitManager;
 
     @Override
     public void onEnable() {
@@ -41,6 +41,8 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
         playersManager = new PlayersManager(this);
         scoreboardManager = new ScoreboardManager(this);
         gameManager = new GameManager(this);
+        lootBoxesManager = new LootBoxesManager(this);
+        kitManager = new KitManager(this);
 
         registerListeners();
         registerCommands();
@@ -88,6 +90,13 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
 
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public LootBoxesManager getLootBoxesManager() {
+        return lootBoxesManager;
+    }
+    public KitManager getKitManager() {
+        return kitManager;
     }
 
     @Override

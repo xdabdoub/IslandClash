@@ -1,5 +1,6 @@
 package me.yhamarsheh.islandclash.listeners;
 
+import de.netzkronehd.wgregionevents.events.RegionEnterEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.yhamarsheh.islandclash.IslandClash;
 import me.yhamarsheh.islandclash.locale.Messages;
@@ -129,6 +130,15 @@ public class GameListener implements Listener {
                         String.format(Messages.STREAK.toString(), lastDamager.getStreak()) : "")));
 
         plugin.getPlayersManager().getDamageManager().remove(lastDamager);
+    }
+
+    @EventHandler
+    public void onDropToArena(RegionEnterEvent e) {
+        Player player = e.getPlayer();
+        if (!e.getRegion().getId().equals("spawn")) return;
+
+        HPlayer hPlayer = plugin.getPlayersManager().getPlayerMap().get(player.getUniqueId());
+        plugin.getKitManager().giveKit(hPlayer);
     }
 
     private String extractColorCode(String rank) {
