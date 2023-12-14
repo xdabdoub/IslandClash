@@ -1,5 +1,7 @@
 package me.yhamarsheh.islandclash.guis;
 
+import com.google.common.collect.Sets;
+import dev.triumphteam.gui.components.InteractionModifier;
 import dev.triumphteam.gui.guis.Gui;
 import me.yhamarsheh.islandclash.IslandClash;
 import me.yhamarsheh.islandclash.storage.objects.HPlayer;
@@ -15,6 +17,11 @@ public class UpgradesGUI {
         this.plugin = plugin;
         this.hPlayer = hPlayer;
 
-        this.gui = new Gui(6, "", new HashSet<>().);
+        this.gui = new Gui(6, "Upgrades", Sets.newHashSet(InteractionModifier.PREVENT_ITEM_DROP, InteractionModifier.PREVENT_ITEM_TAKE
+        , InteractionModifier.PREVENT_ITEM_PLACE, InteractionModifier.PREVENT_ITEM_SWAP));
+    }
+
+    private void setupGui() {
+
     }
 }

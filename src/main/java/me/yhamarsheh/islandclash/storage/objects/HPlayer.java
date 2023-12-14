@@ -1,6 +1,7 @@
 package me.yhamarsheh.islandclash.storage.objects;
 
 import me.yhamarsheh.islandclash.IslandClash;
+import me.yhamarsheh.islandclash.game.session.SessionalStatistics;
 import me.yhamarsheh.islandclash.game.upgrades.PlayerUpgrades;
 import me.yhamarsheh.islandclash.leveling.Rank;
 import me.yhamarsheh.islandclash.storage.SQLDatabase;
@@ -36,12 +37,14 @@ public class HPlayer {
 
     // s
     private PlayerUpgrades playerUpgrades;
+    private SessionalStatistics sessionalStatistics;
 
     public HPlayer(IslandClash plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;
         this.rank = Rank.UNRANKED;
         this.playerUpgrades = new PlayerUpgrades(this);
+        this.sessionalStatistics = new SessionalStatistics(this);
 
         this.sql = plugin.getSQLDatabase();
         create(); // No need to call Async, since this constructor is used in an Async Event. (AsyncPlayerPreLoginEvent)
@@ -51,13 +54,17 @@ public class HPlayer {
      * Class Functions
      */
     public void addKill() {
-        player.setHealth(player.getHealth() + 4);
+        int toAdd = (int) (20 - player.getHealth());
+        if (toAdd > 4) toAdd = 4;
+
+        player.setHealth(player.getHealth() + toAdd);
         setKills(kills + 1);
         addStreak();
     }
 
     public void setKills(int kills) {
         this.kills = kills;
+        sessionalStatistics.setKills(kills);
     }
 
     public int getKills() {
@@ -151,6 +158,7 @@ public class HPlayer {
 
     public void setHyions(int hyions) {
         this.hyions = hyions;
+        sessionalStatistics.setHyions(hyions);
     }
 
     public int getHyions() {
@@ -207,9 +215,11 @@ public class HPlayer {
         return playerUpgrades.getProtectionUpgrade().getLevel() > 0;
     }
 
-
     public PlayerUpgrades getPlayerUpgrades() {
         return playerUpgrades;
+    }
+    public SessionalStatistics getSessionalStatistics() {
+        return sessionalStatistics;
     }
 
     /*
