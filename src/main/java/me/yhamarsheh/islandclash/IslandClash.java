@@ -3,6 +3,7 @@ package me.yhamarsheh.islandclash;
 import me.yhamarsheh.islandclash.api.IslandClashAPI;
 import me.yhamarsheh.islandclash.commands.IClashCMD;
 import me.yhamarsheh.islandclash.game.Game;
+import me.yhamarsheh.islandclash.hooks.ICPlaceholders;
 import me.yhamarsheh.islandclash.listeners.DataHandlingListener;
 import me.yhamarsheh.islandclash.listeners.GameListener;
 import me.yhamarsheh.islandclash.managers.*;
@@ -43,6 +44,9 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
         gameManager = new GameManager(this);
         lootBoxesManager = new LootBoxesManager(this);
         kitManager = new KitManager(this);
+
+        // Placeholders
+        new ICPlaceholders(this);
 
         registerListeners();
         registerCommands();
