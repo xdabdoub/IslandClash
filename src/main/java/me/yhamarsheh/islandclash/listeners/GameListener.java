@@ -14,10 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class GameListener implements Listener {
 
     private IslandClash plugin;
@@ -135,7 +131,7 @@ public class GameListener implements Listener {
     @EventHandler
     public void onDropToArena(RegionEnterEvent e) {
         Player player = e.getPlayer();
-        if (!e.getRegion().getId().equals("spawn")) return;
+        if (!e.getRegion().getId().equals("drop")) return;
 
         HPlayer hPlayer = plugin.getPlayersManager().getPlayerMap().get(player.getUniqueId());
         plugin.getKitManager().giveKit(hPlayer);

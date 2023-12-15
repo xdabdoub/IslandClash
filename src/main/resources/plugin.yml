@@ -2,7 +2,7 @@ name: IslandClash
 version: 0.0
 main: me.yhamarsheh.islandclash.IslandClash
 author: xDabDoub
-depend: [PlaceholderAPI, Multiverse-Core]
+depend: [PlaceholderAPI, Multiverse-Core, WorldGuard, WGRegionEvents]
 api-version: 1.13
 
 commands:

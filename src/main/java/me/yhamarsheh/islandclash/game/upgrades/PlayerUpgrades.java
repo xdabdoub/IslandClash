@@ -12,6 +12,8 @@ public class PlayerUpgrades {
     public PlayerUpgrades(HPlayer hPlayer) {
         this.playerUpgradeArrayList = new ArrayList<>();
         this.hPlayer = hPlayer;
+
+        init();
     }
 
     private void init() {
