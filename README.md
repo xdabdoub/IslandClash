@@ -4,7 +4,6 @@ Description description description....
 ## Team
 ### Developers
 - xDabDoub
-- Pe_n
 
 ### Managment
 - xDabDoub
