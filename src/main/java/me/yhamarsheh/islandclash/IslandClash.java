@@ -11,10 +11,13 @@ import me.yhamarsheh.islandclash.storage.SQLDatabase;
 import me.yhamarsheh.islandclash.storage.objects.HPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class IslandClash extends JavaPlugin implements IslandClashAPI {
@@ -25,6 +28,8 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
     private GameManager gameManager;
     private LootBoxesManager lootBoxesManager;
     private KitManager kitManager;
+
+    private ArrayList<Block> blocks;
 
     @Override
     public void onEnable() {
@@ -44,6 +49,8 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
         gameManager = new GameManager(this);
         lootBoxesManager = new LootBoxesManager(this);
         kitManager = new KitManager(this);
+
+        blocks = new ArrayList<>();
 
         // Placeholders
         new ICPlaceholders(this);
@@ -78,6 +85,9 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
 
     private void disableLogic() {
         playersManager.disable(); // SEVERE - Contains Players Data
+        lootBoxesManager.disable();
+
+        for (Block block : blocks) block.setType(Material.AIR);
     }
 
     public SQLDatabase getSQLDatabase() {
@@ -101,6 +111,10 @@ public class IslandClash extends JavaPlugin implements IslandClashAPI {
     }
     public KitManager getKitManager() {
         return kitManager;
+    }
+
+    public ArrayList<Block> getBlocks() {
+        return blocks;
     }
 
     @Override

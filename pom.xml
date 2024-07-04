@@ -113,8 +113,8 @@
     <dependencies>
     <dependency>
         <groupId>org.spigotmc</groupId>
-        <artifactId>spigot-api</artifactId>
-        <version>1.20.2-R0.1-SNAPSHOT</version>
+        <artifactId>spigot</artifactId>
+        <version>1.8.8-R0.1-SNAPSHOT</version>
         <scope>provided</scope>
     </dependency>
         <dependency>
@@ -145,16 +145,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.NetzkroneHD</groupId>
-            <artifactId>WGRegionEvents</artifactId>
-            <version>v1.7.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.9</version>
-            <scope>provided</scope>
+            <version>6.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/worldguard-6.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

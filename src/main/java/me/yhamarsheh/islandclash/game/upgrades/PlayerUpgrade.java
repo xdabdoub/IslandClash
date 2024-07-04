@@ -6,9 +6,11 @@ public abstract class PlayerUpgrade {
 
     protected int level;
     protected int maxLevel;
+    protected int upgradeCost;
 
-    public PlayerUpgrade(int maxLevel) {
+    public PlayerUpgrade(int maxLevel, int upgradeCost) {
         this.maxLevel = maxLevel;
+        this.upgradeCost = upgradeCost;
     }
 
     public abstract void upgrade(HPlayer hPlayer);
@@ -18,5 +20,9 @@ public abstract class PlayerUpgrade {
     }
     public int getMaxLevel() {
         return maxLevel;
+    }
+
+    public int upgradeCost() {
+        return upgradeCost;
     }
 }

@@ -16,9 +16,16 @@ public class SessionalStatistics {
     public void setKills(int kills) {
         this.kills = kills;
     }
+    public void addKills() {
+        setKills(kills + 1);
+    }
 
     public void setHyions(int hyions) {
         this.hyions = hyions;
+    }
+
+    public void addHyions() {
+        setHyions(hyions + 1);
     }
 
     public int getKills() {

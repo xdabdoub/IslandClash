@@ -1,13 +1,20 @@
 package me.yhamarsheh.islandclash.lootboxes.boxes;
 
 import me.yhamarsheh.islandclash.lootboxes.LootBox;
+import me.yhamarsheh.islandclash.lootboxes.LootBoxType;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
 public class CommonBox extends LootBox {
 
-    public CommonBox() {
-        super("ewogICJ0aW1lc3RhbXAiIDogMTYwODQ4NTc3NDk0OSwKICAicHJvZmlsZUlkIiA6ICI5MThhMDI5NTU5ZGQ0Y2U2YjE2ZjdhNWQ1M2VmYjQxMiIsCiAgInByb2ZpbGVOYW1lIiA6ICJCZWV2ZWxvcGVyIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2FkNGQ1YTk3MWJhN2I3OGNmMTQxYjNlMWMyNjgxZWMyYWQwZTMyYjhjODE2YzQ3NWM5MWRhNGY4NTVmYzEyZiIKICAgIH0KICB9Cn0=",
-                Arrays.asList());
+    public CommonBox(ItemStack itemStack) {
+        super("eyJ0aW1lc3RhbXAiOjE1NzUyMjEwODE4MDEsInByb2ZpbGVJZCI6IjE5MjUyMWI0ZWZkYjQyNWM4OTMxZjAyYTg0OTZlMTFiIiwicHJvZmlsZU5hbWUiOiJTZXJpYWxpemFibGUiLCJzaWduYXR1cmVSZXF1aXJlZCI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJlZjUyN2ZkNjNlMTFjMWFmM2YyMTIwZmQ5MzUxNjg3NTAwNTFhYjE4ZjY4MmIyMzAyMTM3N2EwOWNlNWU2NGEifX19",
+                itemStack);
+    }
+
+    @Override
+    public LootBoxType getType() {
+        return LootBoxType.COMMON;
     }
 }

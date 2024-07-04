@@ -3,6 +3,7 @@ package me.yhamarsheh.islandclash.lootboxes;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import me.yhamarsheh.islandclash.IslandClash;
 import me.yhamarsheh.islandclash.animation.sub.LootBoxAnimation;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
@@ -15,10 +16,10 @@ import java.util.Random;
 public abstract class LootBox {
 
     private final String SKULL_TEXTURE;
-    private List<ItemStack> loot;
     private ArmorStand armorStand;
+    private ItemStack loot;
 
-    public LootBox(String SKULL_TEXTURE, List<ItemStack> loot) {
+    public LootBox(String SKULL_TEXTURE, ItemStack loot) {
         this.SKULL_TEXTURE = SKULL_TEXTURE;
         this.loot = loot;
     }
@@ -28,12 +29,12 @@ public abstract class LootBox {
         this.armorStand.setVisible(false);
         this.armorStand.setHealth(20);
         this.armorStand.setHelmet(ItemBuilder.skull().texture(SKULL_TEXTURE).build());
-
+        this.armorStand.setGravity(false);
         new LootBoxAnimation(JavaPlugin.getPlugin(IslandClash.class), this);
     }
 
-    public ItemStack getRandomLoot() {
-        return loot.get(new Random().nextInt(loot.size()));
+    public ItemStack getLoot() {
+        return loot;
     }
 
     public String getSkullTexture() {
@@ -43,4 +44,6 @@ public abstract class LootBox {
     public ArmorStand getArmorStand() {
         return armorStand;
     }
+
+    public abstract LootBoxType getType();
 }

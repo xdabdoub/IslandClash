@@ -1,6 +1,7 @@
 package me.yhamarsheh.islandclash.storage.objects;
 
 import me.yhamarsheh.islandclash.IslandClash;
+import me.yhamarsheh.islandclash.game.session.Layout;
 import me.yhamarsheh.islandclash.game.session.SessionalStatistics;
 import me.yhamarsheh.islandclash.game.upgrades.PlayerUpgrades;
 import me.yhamarsheh.islandclash.leveling.Rank;
@@ -16,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class HPlayer {
 
@@ -38,13 +40,16 @@ public class HPlayer {
     // s
     private PlayerUpgrades playerUpgrades;
     private SessionalStatistics sessionalStatistics;
+    private Layout layout;
 
     public HPlayer(IslandClash plugin, UUID uuid) {
         this.plugin = plugin;
         this.uuid = uuid;
         this.rank = Rank.UNRANKED;
+        this.level = 1;
         this.playerUpgrades = new PlayerUpgrades(this);
         this.sessionalStatistics = new SessionalStatistics(this);
+        this.layout = new Layout();
 
         this.sql = plugin.getSQLDatabase();
         create(); // No need to call Async, since this constructor is used in an Async Event. (AsyncPlayerPreLoginEvent)
@@ -54,17 +59,17 @@ public class HPlayer {
      * Class Functions
      */
     public void addKill() {
-        int toAdd = (int) (20 - player.getHealth());
-        if (toAdd > 4) toAdd = 4;
+        player.setHealth(20);
+        plugin.getKitManager().giveKit(this);
 
-        player.setHealth(player.getHealth() + toAdd);
         setKills(kills + 1);
         addStreak();
+        addHyions(3);
+        getSessionalStatistics().addKills();
     }
 
     public void setKills(int kills) {
         this.kills = kills;
-        sessionalStatistics.setKills(kills);
     }
 
     public int getKills() {
@@ -73,6 +78,13 @@ public class HPlayer {
 
     public void addDeath() {
         player.setHealth(20);
+
+        player.getInventory().clear();
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
+
         setDeaths(deaths + 1);
         setStreak(0);
     }
@@ -125,6 +137,8 @@ public class HPlayer {
         for (Rank rank : Rank.values()) {
             if (rank.getId() == this.rank.getId() + 1) {
                 setRank(rank);
+                setLevel(1);
+                addHyions(750);
                 return true;
             }
         }
@@ -154,11 +168,11 @@ public class HPlayer {
 
     public void addHyions(int hyions) {
         setHyions(this.hyions + hyions);
+        getSessionalStatistics().addHyions();
     }
 
     public void setHyions(int hyions) {
         this.hyions = hyions;
-        sessionalStatistics.setHyions(hyions);
     }
 
     public int getHyions() {
@@ -215,11 +229,24 @@ public class HPlayer {
         return playerUpgrades.getProtectionUpgrade().getLevel() > 0;
     }
 
+    public boolean hasHasteUpgrade() {
+        if (playerUpgrades.getHasteUpgrade() == null) return false;
+        return playerUpgrades.getHasteUpgrade().getLevel() > 0;
+    }
+
+    public boolean hasSpeedUpgrade() {
+        if (playerUpgrades.getSpeedUpgrade() == null) return false;
+        return playerUpgrades.getSpeedUpgrade().getLevel() > 0;
+    }
     public PlayerUpgrades getPlayerUpgrades() {
         return playerUpgrades;
     }
     public SessionalStatistics getSessionalStatistics() {
         return sessionalStatistics;
+    }
+
+    public Layout getLayout() {
+        return layout;
     }
 
     /*
@@ -234,8 +261,8 @@ public class HPlayer {
             connection = sql.getConnection();
             if (!sql.exists(uuid)) {
                 statement = connection.prepareStatement("INSERT IGNORE INTO player_data (UUID, KILLS, DEATHS, STREAK, " +
-                        "COLLECTED_BOXES, RANK, LEVEL, XP, HYIONS)" +
-                        "VALUES ('" + uuid + "',0,0,0,0,'UNRANKED',1,0,0)");
+                        "COLLECTED_BOXES, RANK, LEVEL, XP, HYIONS, LAYOUT)" +
+                        "VALUES ('" + uuid + "',0,0,0,0,'UNRANKED',1,0,0,'0,1,2,3,4,5,6,7,8')");
                 statement.executeUpdate();
             } else {
                 loadData();
@@ -266,6 +293,7 @@ public class HPlayer {
                 this.level = rs.getInt("LEVEL");
                 this.xp = rs.getInt("XP");
                 this.hyions = rs.getInt("HYIONS");
+                this.layout = new Layout(layout.fromString(rs.getString("LAYOUT")));
             }
 
         } catch (SQLException ex) {
@@ -281,7 +309,7 @@ public class HPlayer {
         try {
             connection = sql.getConnection();
             statement = connection.prepareStatement(
-                    "REPLACE INTO player_data (UUID, KILLS, DEATHS, STREAK, COLLECTED_BOXES, RANK, LEVEL, XP, HYIONS) VALUES " +
+                    "REPLACE INTO player_data (UUID, KILLS, DEATHS, STREAK, COLLECTED_BOXES, RANK, LEVEL, XP, HYIONS, LAYOUT) VALUES " +
                             "('" + uuid + "',"
                             + kills + ","
                             + deaths + ","
@@ -290,15 +318,15 @@ public class HPlayer {
                             + rank.name() + "',"
                             + level + ","
                             + xp + ","
-                            + hyions + ")"
+                            + hyions + ",'"
+                            + layout.toString() + "')"
             );
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Bukkit.getLogger().log(Level.SEVERE, e.getMessage());
         } finally {
             sql.close(connection, statement, null);
         }
     }
-
 }

@@ -58,10 +58,12 @@ public class PlayersManager {
         public void handle(HPlayer damager, HPlayer damaged) {
             if (damageMap.containsValue(damaged) &&
                     damageMap.get(damager) == damaged) return;
+
             if (damageMap.containsValue(damaged)) {
                 for (HPlayer hPlayer : damageMap.keySet()) {
                     if (damageMap.get(hPlayer) == damaged) {
-                        damageMap.replace(damager, damaged);
+                        damageMap.remove(hPlayer);
+                        damageMap.put(damager, damaged);
                         return;
                     }
                 }

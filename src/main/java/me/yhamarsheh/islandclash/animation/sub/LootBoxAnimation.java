@@ -2,35 +2,40 @@ package me.yhamarsheh.islandclash.animation.sub;
 
 import me.yhamarsheh.islandclash.IslandClash;
 import me.yhamarsheh.islandclash.lootboxes.LootBox;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class LootBoxAnimation extends BukkitRunnable {
+public class LootBoxAnimation {
 
     private final IslandClash plugin;
 
     private final LootBox lootBox;
-    private final double speed = 6.0;
 
     public LootBoxAnimation(IslandClash plugin, LootBox lootBox) {
         this.plugin = plugin;
         this.lootBox = lootBox;
-        runTaskTimer(plugin, 0, 1);
+        run();
     }
 
-   private int currentTick = 0;
-    private double lastYOffset = 0;
 
-    @Override
     public void run() {
-        ArmorStand armorStand = lootBox.getArmorStand();
-        if (armorStand == null || armorStand.isDead()) cancel();
 
-        double yOffset = Math.sin(Math.toRadians(currentTick * speed));
-        armorStand.teleport(armorStand.getLocation().add(0, (yOffset - lastYOffset), 0));
-        armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.10, 0));
+        new BukkitRunnable() {
+            double t = 0;
+            Location loc = lootBox.getArmorStand().getLocation();
 
-        lastYOffset = yOffset;
-        currentTick++;
+            @Override
+            public void run() {
+                t = t + Math.PI/32;
+                double y = Math.sin(t);
+                loc.add(0,y,0);
+
+                lootBox.getArmorStand().teleport(loc);
+                lootBox.getArmorStand().setHeadPose(lootBox.getArmorStand().getHeadPose().add(0, 0.17, 0));
+                loc.subtract(0, y, 0);
+
+            }
+        }.runTaskTimer(plugin, 0, 1);
     }
 }

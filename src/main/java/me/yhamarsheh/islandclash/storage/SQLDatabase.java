@@ -98,7 +98,7 @@ public class SQLDatabase {
         PreparedStatement statement = null;
         String query = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                 "UUID VARCHAR(100),KILLS INT(64),DEATHS INT(64),STREAK INT(64),COLLECTED_BOXES INT(64)" +
-                ",RANK VARCHAR(50),LEVEL INT(64),XP INT(64),HYIONS INT,PRIMARY KEY (UUID))";
+                ",RANK VARCHAR(50),LEVEL INT(64),XP INT(64),HYIONS INT,LAYOUT VARCHAR(100),PRIMARY KEY (UUID))";
         try {
             connection = getConnection();
             statement = connection.prepareStatement(query);

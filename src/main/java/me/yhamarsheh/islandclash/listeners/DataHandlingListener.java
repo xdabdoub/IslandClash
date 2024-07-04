@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.UUID;
 import java.util.logging.Level;
@@ -42,6 +43,14 @@ public class DataHandlingListener implements Listener {
         hPlayer.setPlayer(player);
         plugin.getScoreboardManager().createBoard(hPlayer);
         plugin.getGameManager().getGame().addPlayer(hPlayer);
+
+        player.getInventory().clear();
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
+        for (PotionEffect effect : player.getActivePotionEffects())
+            player.removePotionEffect(effect.getType());
 
         hPlayer.teleport(plugin.getActiveGame().getSpawnLocation());
     }
